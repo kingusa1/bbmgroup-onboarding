@@ -401,7 +401,7 @@ function generateClientEmailHTML(data) {
                 <li><strong>Schedule Meeting:</strong> Use the button above to schedule your onboarding meeting.</li>
                 <li><strong>Onboarding Meeting (60-90 min):</strong> We'll review your LinkedIn profile, finalize your target audience, and optimize your profile.</li>
                 <li><strong>Week 1:</strong> Profile optimization and campaign setup.</li>
-                <li><strong>Week 2:</strong> Campaign launch! LinkedIn Helper 2 automation goes live.</li>
+                <li><strong>Week 2:</strong> Campaign launch! Your outreach automation goes live.</li>
                 <li><strong>Month 3+:</strong> Referral introductions begin (with your approval).</li>
             </ol>
         </div>
@@ -487,7 +487,7 @@ function generateBossEmailHTML(data) {
                 <li>Assign Project Manager to this account</li>
                 <li>Schedule onboarding meeting</li>
                 <li>Test LinkedIn account access</li>
-                <li>Configure LinkedIn Helper 2</li>
+                <li>Configure outreach automation</li>
                 <li>Begin profile optimization</li>
             </ol>
         </div>

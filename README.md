@@ -4,7 +4,7 @@ A full-stack automated onboarding system built for **Black Belt Management Group
 
 ## Features
 
-- **6-Step Client Onboarding Form** - Collects all information needed to set up LinkedIn Helper 2 automation for new agents
+- **6-Step Client Onboarding Form** - Collects all information needed to set up LinkedIn outreach automation for new agents
 - **Password-Protected Admin Dashboard** - View all clients, their account details, and full onboarding submissions in one place
 - **Google Sheets Integration** - Automatically saves all client data to organized Google Sheets tabs via the Sheets API v4
 - **Automated Email Notifications** - Sends welcome emails to clients and notification emails to the admin via Brevo API
