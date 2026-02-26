@@ -41,14 +41,22 @@ function requireDashboardAuth(req, res, next) {
 
 // ---- GOOGLE SHEETS API SETUP ----
 function getGoogleSheetsAuth() {
+    const scopes = [
+        'https://www.googleapis.com/auth/spreadsheets',
+        'https://www.googleapis.com/auth/drive',
+    ];
+
+    // Use env-based credentials (Vercel) or file-based (local dev)
+    if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+        const credentials = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+        return new google.auth.GoogleAuth({
+            credentials,
+            scopes,
+        });
+    }
+
     const keyFile = path.join(__dirname, 'service-account.json');
-    return new google.auth.GoogleAuth({
-        keyFile: keyFile,
-        scopes: [
-            'https://www.googleapis.com/auth/spreadsheets',
-            'https://www.googleapis.com/auth/drive',
-        ],
-    });
+    return new google.auth.GoogleAuth({ keyFile, scopes });
 }
 
 async function appendToSheets(data) {
