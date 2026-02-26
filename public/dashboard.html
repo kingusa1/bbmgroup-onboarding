@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>BBM Group - Admin Dashboard</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a3a5c;
+            --primary-light: #2c5282;
+            --accent: #3182ce;
+            --accent-light: #63b3ed;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --error: #e53e3e;
+            --text: #2d3748;
+            --text-light: #718096;
+            --text-lighter: #a0aec0;
+            --bg: #f7fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --radius: 8px;
+            --radius-lg: 12px;
+            --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* ========== LOGIN SCREEN ========== */
+        .login-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-overlay.hidden { display: none; }
+
+        .login-box {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        .login-box h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .login-box .login-subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 28px;
+        }
+
+        .login-box label {
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .login-box input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-family: inherit;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .login-box input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(49,130,206,0.15);
+        }
+
+        .login-box input[type="password"].login-error {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(229,62,62,0.15);
+        }
+
+        .login-error-msg {
+            color: var(--error);
+            font-size: 13px;
+            margin-bottom: 12px;
+            min-height: 18px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--accent);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .login-btn:hover { background: var(--primary-light); }
+        .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* ========== DASHBOARD (hidden until login) ========== */
+        .dashboard-wrapper { display: none; }
+        .dashboard-wrapper.visible { display: block; }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .top-nav h1 { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+        .top-nav .subtitle { font-size: 12px; opacity: 0.8; }
+
+        .nav-actions { display: flex; gap: 12px; align-items: center; }
+
+        .nav-btn {
+            padding: 8px 16px;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.1);
+            color: var(--white);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.5); }
+        .nav-btn.logout-btn { border-color: rgba(229,62,62,0.5); background: rgba(229,62,62,0.2); }
+        .nav-btn.logout-btn:hover { background: rgba(229,62,62,0.4); }
+
+        /* Main Layout */
+        .dashboard-container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .stat-card .stat-label { font-size: 12px; font-weight: 600; color: var(--text-lighter); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card .stat-value { font-size: 32px; font-weight: 700; color: var(--primary); margin: 4px 0; }
+        .stat-card .stat-desc { font-size: 12px; color: var(--text-light); }
+
+        /* Sections */
+        .section {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-header h2 { font-size: 18px; font-weight: 700; color: var(--primary); }
+
+        .section-header .search-box {
+            padding: 8px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            min-width: 250px;
+            font-family: inherit;
+        }
+
+        .section-header .search-box:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(49,130,206,0.15); }
+
+        /* Onboarding Link Section */
+        .onboarding-link-section { padding: 24px; }
+
+        .link-row {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .link-col { flex: 1; min-width: 300px; }
+
+        .qr-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qr-col img {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 8px;
+            background: var(--white);
+        }
+
+        .qr-col span { font-size: 12px; color: var(--text-light); }
+
+        .link-box {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .link-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-family: monospace;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .copy-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--accent);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover { background: var(--primary-light); }
+        .copy-btn.copied { background: var(--success); }
+
+        /* Client Cards Grid */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 16px;
+            padding: 24px;
+        }
+
+        .client-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .client-card:hover { box-shadow: var(--shadow-md); border-color: var(--accent); }
+
+        .client-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .client-name { font-size: 17px; font-weight: 700; color: var(--primary); }
+
+        .client-status {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active { background: #c6f6d5; color: #276749; }
+        .status-new { background: #bee3f8; color: #2a4365; }
+        .status-pending { background: #fefcbf; color: #744210; }
+
+        .client-details {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 6px 12px;
+            font-size: 13px;
+        }
+
+        .client-details .detail-label { font-weight: 600; color: var(--text-light); white-space: nowrap; }
+        .client-details .detail-value { color: var(--text); word-break: break-all; }
+
+        .client-details .detail-value.password {
+            font-family: monospace;
+            background: #edf2f7;
+            padding: 1px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .client-details .detail-value.password .hidden-pw { display: inline; }
+        .client-details .detail-value.password .shown-pw { display: none; }
+        .client-details .detail-value.password.revealed .hidden-pw { display: none; }
+        .client-details .detail-value.password.revealed .shown-pw { display: inline; }
+
+        /* Loading state */
+        .loading-spinner { text-align: center; padding: 60px; color: var(--text-light); }
+
+        .loading-spinner::after {
+            content: '';
+            display: inline-block;
+            width: 30px; height: 30px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-spinner p { margin-top: 12px; font-size: 14px; }
+
+        .error-box { text-align: center; padding: 40px; color: var(--error); }
+        .error-box p { margin-top: 8px; font-size: 14px; }
+
+        .retry-btn {
+            margin-top: 16px;
+            padding: 10px 24px;
+            border: 1.5px solid var(--error);
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--error);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .retry-btn:hover { background: var(--error); color: var(--white); }
+
+        .no-results { text-align: center; padding: 40px; color: var(--text-light); font-size: 14px; }
+
+        .refresh-btn {
+            padding: 6px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--white);
+            color: var(--text);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover { background: var(--bg); border-color: var(--accent); }
+
+        /* Client Detail Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 1;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .modal-header h2 { font-size: 18px; font-weight: 700; color: var(--primary); }
+
+        .modal-close {
+            width: 32px; height: 32px;
+            border: none;
+            border-radius: 50%;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover { background: var(--error); color: var(--white); }
+
+        .modal-body { padding: 24px; }
+
+        .detail-section { margin-bottom: 20px; }
+
+        .detail-section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 8px 12px;
+            font-size: 13px;
+        }
+
+        .detail-grid .dg-label { font-weight: 600; color: var(--text-light); }
+        .detail-grid .dg-value { color: var(--text); word-break: break-word; }
+        .detail-grid .dg-value.mono { font-family: monospace; background: #edf2f7; padding: 2px 6px; border-radius: 4px; }
+
+        .modal-loading { text-align: center; padding: 40px; color: var(--text-light); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-container { padding: 12px; }
+            .top-nav { padding: 12px 16px; flex-direction: column; gap: 8px; }
+            .top-nav h1 { font-size: 17px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .clients-grid { grid-template-columns: 1fr; padding: 16px; }
+            .section-header { padding: 14px 16px; }
+            .section-header .search-box { min-width: 100%; }
+            .link-input { min-width: 100%; }
+            .link-box { flex-direction: column; }
+            .copy-btn { width: 100%; }
+            .onboarding-link-section { padding: 16px; }
+            .link-row { flex-direction: column; }
+            .link-col { min-width: 100%; }
+            .login-box { padding: 28px 20px; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .stat-card { padding: 14px; }
+            .stat-card .stat-value { font-size: 26px; }
+            .nav-actions { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ========== LOGIN SCREEN ========== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <img src="logo.jpg" alt="BBMG" style="height:50px; margin-bottom:12px; border-radius:6px;">
+            <h1>BBM GROUP</h1>
+            <p class="login-subtitle">Admin Dashboard Login</p>
+            <form onsubmit="handleLogin(event)">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter dashboard password" autofocus>
+                <div class="login-error-msg" id="loginError"></div>
+                <button type="submit" class="login-btn" id="loginBtn">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========== DASHBOARD (hidden until login) ========== -->
+    <div class="dashboard-wrapper" id="dashboardWrapper">
+        <nav class="top-nav">
+            <div>
+                <img src="logo.jpg" alt="BBMG" style="height:36px; border-radius:4px; margin-right:12px;">
+                <div>
+                    <h1>BLACK BELT MANAGEMENT GROUP</h1>
+                    <span class="subtitle">Admin Dashboard - Affinity Advantage Program</span>
+                </div>
+            </div>
+            <div class="nav-actions">
+                <button class="nav-btn logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Clients</div>
+                    <div class="stat-value" id="totalClients">-</div>
+                    <div class="stat-desc">All onboarded accounts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Active</div>
+                    <div class="stat-value" id="activeClients">-</div>
+                    <div class="stat-desc">Currently running campaigns</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">New / Pending</div>
+                    <div class="stat-value" id="newClients">-</div>
+                    <div class="stat-desc">Awaiting setup</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Recent Submissions</div>
+                    <div class="stat-value" id="recentSubmissions">-</div>
+                    <div class="stat-desc">Last 7 days</div>
+                </div>
+            </div>
+
+            <!-- Onboarding Form Link + QR Code Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Onboarding Form Link & QR Code</h2>
+                </div>
+                <div class="onboarding-link-section">
+                    <p style="margin-bottom:16px; font-size:14px; color:var(--text-light);">Share this link or QR code with new clients to start their onboarding:</p>
+                    <div class="link-row">
+                        <div class="link-col">
+                            <div class="link-box">
+                                <input type="text" class="link-input" id="formLink" readonly>
+                                <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+                            </div>
+                        </div>
+                        <div class="qr-col">
+                            <img id="qrCode" src="" alt="QR Code" width="150" height="150">
+                            <span>Scan to open onboarding form</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Clients Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>All Clients</h2>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <input type="text" class="search-box" id="searchInput" placeholder="Search by name, email, phone..." oninput="filterClients()">
+                        <button class="refresh-btn" onclick="loadClients()">Refresh</button>
+                    </div>
+                </div>
+                <div id="clientsContainer">
+                    <div class="loading-spinner"><p>Loading clients...</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Client Detail Modal -->
+        <div class="modal-overlay" id="clientModal" onclick="if(event.target===this)closeModal()">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalClientName">Client Details</h2>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <div class="modal-loading">Loading details...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allClients = [];
+        let authToken = sessionStorage.getItem('dashboardToken') || '';
+
+        // Check if already logged in
+        if (authToken) {
+            showDashboard();
+        }
+
+        // ---- LOGIN ----
+        async function handleLogin(e) {
+            e.preventDefault();
+            const pw = document.getElementById('loginPassword');
+            const errorEl = document.getElementById('loginError');
+            const btn = document.getElementById('loginBtn');
+
+            errorEl.textContent = '';
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+
+            try {
+                const res = await fetch('/api/dashboard/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: pw.value }),
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    authToken = data.token;
+                    sessionStorage.setItem('dashboardToken', authToken);
+                    showDashboard();
+                } else {
+                    pw.classList.add('login-error');
+                    errorEl.textContent = 'Incorrect password. Please try again.';
+                    pw.value = '';
+                    pw.focus();
+                }
+            } catch (err) {
+                errorEl.textContent = 'Connection error. Please try again.';
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Login';
+        }
+
+        function showDashboard() {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            document.getElementById('dashboardWrapper').classList.add('visible');
+
+            // Set form link and QR code
+            const formUrl = window.location.origin + '/';
+            document.getElementById('formLink').value = formUrl;
+            document.getElementById('qrCode').src = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(formUrl);
+
+            loadClients();
+        }
+
+        function handleLogout() {
+            fetch('/api/dashboard/logout', {
+                method: 'POST',
+                headers: { 'X-Dashboard-Token': authToken },
+            });
+            authToken = '';
+            sessionStorage.removeItem('dashboardToken');
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('dashboardWrapper').classList.remove('visible');
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').textContent = '';
+        }
+
+        // ---- COPY LINK ----
+        function copyLink() {
+            const input = document.getElementById('formLink');
+            input.select();
+            navigator.clipboard.writeText(input.value).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => { btn.textContent = 'Copy Link'; btn.classList.remove('copied'); }, 2000);
+            });
+        }
+
+        // Toggle password visibility
+        function togglePassword(el) {
+            el.classList.toggle('revealed');
+        }
+
+        // ---- LOAD CLIENTS ----
+        async function loadClients() {
+            const container = document.getElementById('clientsContainer');
+            container.innerHTML = '<div class="loading-spinner"><p>Loading clients...</p></div>';
+
+            try {
+                const response = await fetch('/api/clients', {
+                    headers: { 'X-Dashboard-Token': authToken },
+                });
+
+                if (response.status === 401) {
+                    handleLogout();
+                    return;
+                }
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    allClients = result.clients;
+                    renderClients(allClients);
+                    updateStats(allClients);
+                } else {
+                    throw new Error(result.message || 'Failed to load clients');
+                }
+            } catch (err) {
+                container.innerHTML = `
+                    <div class="error-box">
+                        <p><strong>Error loading clients</strong></p>
+                        <p>${escapeHtml(err.message)}</p>
+                        <button class="retry-btn" onclick="loadClients()">Retry</button>
+                    </div>`;
+            }
+        }
+
+        // ---- RENDER CLIENTS ----
+        function renderClients(clients) {
+            const container = document.getElementById('clientsContainer');
+
+            if (clients.length === 0) {
+                container.innerHTML = '<div class="no-results">No clients found.</div>';
+                return;
+            }
+
+            const html = '<div class="clients-grid">' + clients.map(client => {
+                const statusClass = (client.status || '').toLowerCase().includes('active') ? 'status-active' :
+                    (client.status || '').toLowerCase().includes('new') ? 'status-new' : 'status-pending';
+                const statusText = client.status || 'Unknown';
+
+                return `
+                    <div class="client-card" style="cursor:pointer" onclick="openClientDetail('${escapeHtml(client.name).replace(/'/g, "\\'")}')">
+                        <div class="client-card-header">
+                            <div class="client-name">${escapeHtml(client.name || 'Unnamed')}</div>
+                            <span class="client-status ${statusClass}">${escapeHtml(statusText)}</span>
+                        </div>
+                        <div class="client-details">
+                            ${client.phone ? `<span class="detail-label">Phone:</span><span class="detail-value">${escapeHtml(client.phone)}</span>` : ''}
+                            ${client.email ? `<span class="detail-label">Email:</span><span class="detail-value">${escapeHtml(client.email)}</span>` : ''}
+                            ${client.linkedinEmail ? `<span class="detail-label">LinkedIn:</span><span class="detail-value">${escapeHtml(client.linkedinEmail)}</span>` : ''}
+                            ${client.linkedinPassword ? `<span class="detail-label">LI Pass:</span><span class="detail-value password" onclick="togglePassword(this)"><span class="hidden-pw">Click to reveal</span><span class="shown-pw">${escapeHtml(client.linkedinPassword)}</span></span>` : ''}
+                            ${client.gmailAccess ? `<span class="detail-label">Gmail:</span><span class="detail-value">${escapeHtml(client.gmailAccess)}</span>` : ''}
+                            ${client.gmailPassword ? `<span class="detail-label">Gmail Pass:</span><span class="detail-value password" onclick="togglePassword(this)"><span class="hidden-pw">Click to reveal</span><span class="shown-pw">${escapeHtml(client.gmailPassword)}</span></span>` : ''}
+                            ${client.location ? `<span class="detail-label">Location:</span><span class="detail-value">${escapeHtml(client.location)}</span>` : ''}
+                            ${client.accountType ? `<span class="detail-label">Account:</span><span class="detail-value">${escapeHtml(client.accountType)}</span>` : ''}
+                            ${client.dateAdded ? `<span class="detail-label">Added:</span><span class="detail-value">${escapeHtml(client.dateAdded)}</span>` : ''}
+                        </div>
+                    </div>`;
+            }).join('') + '</div>';
+
+            container.innerHTML = html;
+        }
+
+        // ---- UPDATE STATS ----
+        function updateStats(clients) {
+            document.getElementById('totalClients').textContent = clients.length;
+            document.getElementById('activeClients').textContent = clients.filter(c =>
+                (c.status || '').toLowerCase().includes('active')).length;
+            document.getElementById('newClients').textContent = clients.filter(c =>
+                (c.status || '').toLowerCase().includes('new') || (c.status || '').toLowerCase().includes('pending')).length;
+
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            const recent = clients.filter(c => {
+                if (!c.dateAdded) return false;
+                const d = new Date(c.dateAdded);
+                return !isNaN(d) && d >= weekAgo;
+            });
+            document.getElementById('recentSubmissions').textContent = recent.length;
+        }
+
+        // ---- FILTER ----
+        function filterClients() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!query) { renderClients(allClients); return; }
+            const filtered = allClients.filter(c =>
+                (c.name || '').toLowerCase().includes(query) ||
+                (c.email || '').toLowerCase().includes(query) ||
+                (c.phone || '').toLowerCase().includes(query) ||
+                (c.linkedinEmail || '').toLowerCase().includes(query) ||
+                (c.location || '').toLowerCase().includes(query)
+            );
+            renderClients(filtered);
+        }
+
+        // ---- CLIENT DETAIL MODAL ----
+        async function openClientDetail(name) {
+            const modal = document.getElementById('clientModal');
+            const body = document.getElementById('modalBody');
+            document.getElementById('modalClientName').textContent = name;
+            body.innerHTML = '<div class="modal-loading">Loading full details...</div>';
+            modal.classList.add('active');
+
+            // First show what we have from the client list
+            const client = allClients.find(c => c.name === name);
+
+            try {
+                const res = await fetch('/api/clients/' + encodeURIComponent(name) + '/details', {
+                    headers: { 'X-Dashboard-Token': authToken },
+                });
+
+                if (res.status === 401) { handleLogout(); return; }
+                const data = await res.json();
+
+                if (data.details) {
+                    renderDetailModal(name, data.details, client);
+                } else {
+                    // No onboarding submission found, show what we have from Client Accounts
+                    renderBasicDetail(name, client);
+                }
+            } catch (err) {
+                renderBasicDetail(name, client);
+            }
+        }
+
+        function renderDetailModal(name, details, client) {
+            const body = document.getElementById('modalBody');
+
+            // Group the details into sections
+            const sections = [
+                { title: 'Client Information', keys: ['Full Name', 'Email', 'Phone', 'Company', 'Job Title', 'Website', 'Referral Source'] },
+                { title: 'LinkedIn Account', keys: ['LinkedIn URL', 'LinkedIn Email', 'LinkedIn Password', 'Account Age', 'Connection Count', 'Account Classification', '2FA Method', '2FA Contact', 'Account Status'] },
+                { title: 'Target Audience & Goals', keys: ['Primary Goal', 'Audience Category', 'Ethnic Community', 'Ethnic Geographic', 'Language Preferences', 'Religious Affiliation', 'Community Orgs', 'Primary Industry', 'Secondary Industry', 'Industry Keywords', 'Niche Specialization', 'Target Job Titles', 'Geographic Focus', 'Company Size Preference', 'Seniority Level'] },
+                { title: 'Profile Details', keys: ['Current Headline', 'Current About', 'Key Accomplishments', 'Value Proposition', 'Profile Assets', 'Recommendation Count', 'Licenses', 'Profile Notes'] },
+                { title: 'Campaign Settings', keys: ['Weekend Activity', 'Working Hours', 'BBM Messaging Approval', 'Defy Messaging Approval', 'Campaign Notes'] },
+                { title: 'Agreement', keys: ['Agree Terms', 'Signature Name', 'Signature Date', 'Status'] },
+            ];
+
+            // Also include Gmail info from client accounts
+            const gmailFields = {};
+            if (client) {
+                if (client.gmailAccess) gmailFields['Gmail Access'] = client.gmailAccess;
+                if (client.gmailPassword) gmailFields['Gmail Password'] = client.gmailPassword;
+                if (client.gmailRecovery) gmailFields['Gmail Recovery'] = client.gmailRecovery;
+                if (client.dob) gmailFields['Date of Birth'] = client.dob;
+            }
+
+            let html = '';
+
+            // Add gmail / extra info section if exists
+            if (Object.keys(gmailFields).length > 0) {
+                html += '<div class="detail-section"><div class="detail-section-title">Account Extras</div><div class="detail-grid">';
+                for (const [k, v] of Object.entries(gmailFields)) {
+                    const isSensitive = k.toLowerCase().includes('password');
+                    html += `<span class="dg-label">${escapeHtml(k)}:</span><span class="dg-value${isSensitive ? ' mono' : ''}">${escapeHtml(v)}</span>`;
+                }
+                html += '</div></div>';
+            }
+
+            sections.forEach(section => {
+                const items = section.keys.filter(k => details[k]);
+                if (items.length === 0) return;
+
+                html += `<div class="detail-section"><div class="detail-section-title">${section.title}</div><div class="detail-grid">`;
+                items.forEach(key => {
+                    const val = details[key];
+                    const isSensitive = key.toLowerCase().includes('password');
+                    html += `<span class="dg-label">${escapeHtml(key)}:</span><span class="dg-value${isSensitive ? ' mono' : ''}">${escapeHtml(val)}</span>`;
+                });
+                html += '</div></div>';
+            });
+
+            // Add timestamp
+            if (details['Timestamp']) {
+                html += `<div style="font-size:12px; color:var(--text-lighter); margin-top:16px; text-align:right;">Submitted: ${escapeHtml(details['Timestamp'])}</div>`;
+            }
+
+            body.innerHTML = html || '<div class="no-results">No detailed data available.</div>';
+        }
+
+        function renderBasicDetail(name, client) {
+            const body = document.getElementById('modalBody');
+            if (!client) {
+                body.innerHTML = '<div class="no-results">No detailed data available for this client.</div>';
+                return;
+            }
+
+            let html = '<div class="detail-section"><div class="detail-section-title">Client Account Data</div><div class="detail-grid">';
+            const fields = [
+                ['Name', client.name], ['Phone', client.phone], ['Date of Birth', client.dob],
+                ['Email', client.email], ['LinkedIn Email', client.linkedinEmail],
+                ['LinkedIn Password', client.linkedinPassword], ['Gmail', client.gmailAccess],
+                ['Gmail Password', client.gmailPassword], ['Gmail Recovery', client.gmailRecovery],
+                ['Location', client.location], ['Account Type', client.accountType],
+                ['Status', client.status], ['Date Added', client.dateAdded],
+            ];
+
+            fields.forEach(([label, val]) => {
+                if (!val) return;
+                const isSensitive = label.toLowerCase().includes('password');
+                html += `<span class="dg-label">${escapeHtml(label)}:</span><span class="dg-value${isSensitive ? ' mono' : ''}">${escapeHtml(val)}</span>`;
+            });
+
+            html += '</div></div>';
+            html += '<div style="font-size:12px; color:var(--text-lighter); margin-top:12px;">This client was added before the onboarding form. Only basic account data is available.</div>';
+            body.innerHTML = html;
+        }
+
+        function closeModal() {
+            document.getElementById('clientModal').classList.remove('active');
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // ---- ESCAPE HTML ----
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

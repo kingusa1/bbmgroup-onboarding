@@ -1,0 +1,184 @@
+========================================================
+  DEFY INSURANCE - ONBOARDING SYSTEM SETUP GUIDE
+========================================================
+
+This guide walks you through setting up the complete
+automated onboarding system with:
+  - Client form (web page)
+  - Google Sheets integration (auto-save submissions)
+  - Brevo email notifications (client + boss emails)
+
+========================================================
+STEP 1: GOOGLE SHEETS SETUP
+========================================================
+
+1. Go to https://sheets.google.com and create a NEW spreadsheet
+2. Name it: "Defy Insurance - Client Onboarding"
+3. Go to Extensions > Apps Script
+4. Delete all the default code in the editor
+5. Copy the ENTIRE contents of "google-apps-script.gs"
+   and paste it into the Apps Script editor
+6. Click the Save icon (or Ctrl+S)
+7. In the function dropdown (top bar), select "initializeSheet"
+8. Click "Run" - this creates the headers in your sheet
+   (You'll need to authorize it the first time)
+9. Click "Deploy" > "New deployment"
+10. Click the gear icon > Select "Web app"
+11. Settings:
+    - Description: "Defy Onboarding Form Backend"
+    - Execute as: "Me"
+    - Who has access: "Anyone"
+12. Click "Deploy"
+13. COPY the Web App URL (looks like: https://script.google.com/macros/s/XXXXX/exec)
+14. Open "script.js" and replace:
+    YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE
+    with the URL you copied
+
+========================================================
+STEP 2: BREVO (EMAIL) SETUP
+========================================================
+
+Brevo (formerly Sendinblue) sends automatic emails
+to clients and your boss when forms are submitted.
+
+1. Go to https://www.brevo.com and create a free account
+   (Free plan: 300 emails/day - more than enough)
+2. After signing up, go to your dashboard
+3. Navigate to: Settings (gear icon) > SMTP & API > API Keys
+4. Click "Generate a new API key"
+5. Name it: "Defy Onboarding System"
+6. COPY the API key
+7. Open "script.js" and replace:
+    YOUR_BREVO_API_KEY_HERE
+    with your Brevo API key
+
+8. VERIFY YOUR SENDER EMAIL:
+   - Go to Settings > Senders, Domains & Dedicated IPs > Senders
+   - Click "Add a sender"
+   - Add the email you want to send FROM
+     (e.g., onboarding@defyinsurance.com or your gmail)
+   - Verify it by clicking the link in the confirmation email
+
+9. UPDATE THESE VALUES in script.js:
+   - BOSS_EMAIL: Your boss's actual email address
+   - BOSS_NAME: Your boss's name
+   - SENDER_EMAIL: The verified sender email from step 8
+   - SENDER_NAME: "Defy Insurance - Affinity Program" (or customize)
+
+========================================================
+STEP 3: HOSTING THE FORM (OPTIONS)
+========================================================
+
+The form needs to be hosted somewhere so clients can
+access it via a link. Here are your options:
+
+--- OPTION A: Netlify (FREE - Easiest) ---
+1. Go to https://app.netlify.com
+2. Sign up (free)
+3. Drag and drop the ENTIRE folder containing:
+   - index.html
+   - styles.css
+   - script.js
+   into the Netlify deploy area
+4. You'll get a URL like: https://your-site.netlify.app
+5. You can set a custom domain if you want
+
+--- OPTION B: GitHub Pages (FREE) ---
+1. Create a GitHub repository
+2. Push index.html, styles.css, script.js to the repo
+3. Go to Settings > Pages
+4. Set source to "main" branch
+5. Your form will be at: https://yourusername.github.io/repo-name
+
+--- OPTION C: Local / Send Files Directly ---
+1. You can just open index.html in a browser to test
+2. For sharing, you'd need one of the hosting options above
+
+--- OPTION D: Vercel (FREE) ---
+1. Go to https://vercel.com
+2. Import your folder/repo
+3. Deploy with one click
+
+========================================================
+STEP 4: TESTING THE SYSTEM
+========================================================
+
+1. Open index.html in your browser (or your hosted URL)
+2. Fill out the form with test data
+3. Submit the form
+4. Check:
+   [ ] Google Sheet has a new row with all the data
+   [ ] Client email received (check the email you entered)
+   [ ] Boss email received (check the boss email)
+5. If Google Sheets works but emails don't:
+   - Double-check Brevo API key
+   - Make sure sender email is verified in Brevo
+   - Check browser console (F12) for error messages
+6. If nothing works:
+   - Check browser console for errors
+   - Make sure the Google Apps Script URL is correct
+   - Re-deploy the Apps Script if needed
+
+========================================================
+STEP 5: SHARING WITH CLIENTS
+========================================================
+
+Once everything is working:
+1. Send clients the form URL
+2. Suggested email to clients:
+
+   Subject: Defy Insurance - Complete Your Onboarding Form
+
+   Hi [Client Name],
+
+   Welcome to the Defy Insurance Affinity Advantage Program!
+
+   To get started, please complete our onboarding form:
+   [YOUR FORM URL]
+
+   The form takes about 10-15 minutes to complete. Please have
+   your LinkedIn login credentials ready.
+
+   After you submit, your Project Manager will reach out within
+   24 hours to schedule your onboarding meeting.
+
+   Best regards,
+   [Your Name]
+   Defy Insurance
+
+========================================================
+FILE OVERVIEW
+========================================================
+
+index.html          - The onboarding form (main page)
+styles.css          - Styling and design
+script.js           - Form logic + Google Sheets + Brevo emails
+google-apps-script.gs - Code to paste into Google Apps Script
+SETUP_GUIDE.txt     - This file
+
+========================================================
+TROUBLESHOOTING
+========================================================
+
+Q: Form submits but nothing shows in Google Sheets?
+A: Make sure you deployed the Apps Script as a "Web app"
+   with "Anyone" access, and pasted the correct URL.
+
+Q: Emails not sending?
+A: Check that your Brevo API key is correct and your
+   sender email is verified in Brevo settings.
+
+Q: Form shows "CORS error" in console?
+A: The Google Apps Script request uses 'no-cors' mode,
+   so this is normal. Data should still be saved.
+
+Q: Need to update the Apps Script?
+A: After making changes, you must create a NEW deployment
+   (Deploy > New deployment) and update the URL in script.js.
+
+Q: Can I customize the form fields?
+A: Yes! Edit index.html to add/remove fields. Then update
+   the HEADERS array in google-apps-script.gs to match,
+   and update the row-building logic in doPost().
+
+========================================================

@@ -1,0 +1,21 @@
+{
+    "name": "BBM Group - Onboarding",
+    "short_name": "BBMG",
+    "description": "Black Belt Management Group - Affinity Advantage Program",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1a3a5c",
+    "theme_color": "#1a3a5c",
+    "icons": [
+        {
+            "src": "logo.jpg",
+            "sizes": "192x192",
+            "type": "image/jpeg"
+        },
+        {
+            "src": "logo.jpg",
+            "sizes": "512x512",
+            "type": "image/jpeg"
+        }
+    ]
+}

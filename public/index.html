@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>BBM Group - Affinity Advantage Program Onboarding</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="logo.jpg" alt="BBMG" style="height:60px; margin-bottom:10px; border-radius:8px;">
+                <h1>BLACK BELT MANAGEMENT GROUP</h1>
+                <p class="tagline">Affinity Advantage Program</p>
+            </div>
+            <p class="subtitle">Client Onboarding Form</p>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="steps-indicator">
+                <div class="step-dot active" data-step="1"><span>1</span><label>Client Info</label></div>
+                <div class="step-dot" data-step="2"><span>2</span><label>LinkedIn Account</label></div>
+                <div class="step-dot" data-step="3"><span>3</span><label>Target Audience</label></div>
+                <div class="step-dot" data-step="4"><span>4</span><label>Profile Details</label></div>
+                <div class="step-dot" data-step="5"><span>5</span><label>Campaign</label></div>
+                <div class="step-dot" data-step="6"><span>6</span><label>Agreement</label></div>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <form id="onboardingForm" novalidate>
+
+            <!-- Step 1: Client Information -->
+            <div class="form-step active" id="step1">
+                <div class="step-header">
+                    <h2>Client Information</h2>
+                    <p>Let's start with your basic information.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="e.g. John Smith">
+                    <span class="error-msg" id="fullName-error"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required placeholder="john@example.com">
+                        <span class="error-msg" id="email-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567">
+                        <span class="error-msg" id="phone-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="companyName">Company / Agency Name <span class="required">*</span></label>
+                        <input type="text" id="companyName" name="companyName" required placeholder="Your company name">
+                        <span class="error-msg" id="companyName-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">Your Job Title <span class="required">*</span></label>
+                        <input type="text" id="jobTitle" name="jobTitle" required placeholder="e.g. Insurance Agent">
+                        <span class="error-msg" id="jobTitle-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="website">Company Website (optional)</label>
+                    <input type="url" id="website" name="website" placeholder="https://www.yourcompany.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="referralSource">How did you hear about the Affinity Advantage Program?</label>
+                    <select id="referralSource" name="referralSource">
+                        <option value="">Select one...</option>
+                        <option value="referral">Referral from another agent</option>
+                        <option value="bbm_rep">BBM Group representative</option>
+                        <option value="linkedin">LinkedIn</option>
+                        <option value="event">Industry event</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Step 2: LinkedIn Account Details -->
+            <div class="form-step" id="step2">
+                <div class="step-header">
+                    <h2>LinkedIn Account Details</h2>
+                    <p>We need access to your LinkedIn account to manage your campaigns. All credentials are stored securely.</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>Why do we need this?</strong>
+                    <p>To connect your account to LinkedIn Helper 2 and run your personalized outreach campaigns, we need your LinkedIn login credentials and a way to handle two-factor authentication.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkedinUrl">LinkedIn Profile URL <span class="required">*</span></label>
+                    <input type="url" id="linkedinUrl" name="linkedinUrl" required placeholder="https://www.linkedin.com/in/yourprofile">
+                    <span class="error-msg" id="linkedinUrl-error"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="linkedinEmail">LinkedIn Login Email <span class="required">*</span></label>
+                        <input type="email" id="linkedinEmail" name="linkedinEmail" required placeholder="your-linkedin@email.com">
+                        <span class="error-msg" id="linkedinEmail-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="linkedinPassword">LinkedIn Password <span class="required">*</span></label>
+                        <input type="password" id="linkedinPassword" name="linkedinPassword" required placeholder="Your LinkedIn password">
+                        <span class="error-msg" id="linkedinPassword-error"></span>
+                        <small class="field-hint">Stored securely and used only for campaign management.</small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="accountAge">Account Age <span class="required">*</span></label>
+                        <select id="accountAge" name="accountAge" required>
+                            <option value="">Select...</option>
+                            <option value="less_than_1_year">Less than 1 year</option>
+                            <option value="1_to_3_years">1-3 years</option>
+                            <option value="3_plus_years">3+ years</option>
+                        </select>
+                        <span class="error-msg" id="accountAge-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="connectionCount">Approximate Connection Count <span class="required">*</span></label>
+                        <select id="connectionCount" name="connectionCount" required>
+                            <option value="">Select...</option>
+                            <option value="under_500">Under 500</option>
+                            <option value="500_to_999">500 - 999</option>
+                            <option value="1000_to_2999">1,000 - 2,999</option>
+                            <option value="3000_to_4999">3,000 - 4,999</option>
+                            <option value="5000_plus">5,000+</option>
+                        </select>
+                        <span class="error-msg" id="connectionCount-error"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="twoFactorMethod">Two-Factor Authentication Method <span class="required">*</span></label>
+                    <select id="twoFactorMethod" name="twoFactorMethod" required>
+                        <option value="">Select...</option>
+                        <option value="sms">SMS / Text Message</option>
+                        <option value="email">Email</option>
+                        <option value="authenticator">Authenticator App</option>
+                        <option value="none">Not Enabled</option>
+                    </select>
+                    <span class="error-msg" id="twoFactorMethod-error"></span>
+                </div>
+
+                <div class="form-group" id="twoFactorContactGroup">
+                    <label for="twoFactorContact">Phone/Email for 2FA Codes <span class="required">*</span></label>
+                    <input type="text" id="twoFactorContact" name="twoFactorContact" placeholder="Phone or email that receives 2FA codes">
+                    <small class="field-hint">We'll contact you in real-time when a code is needed during setup.</small>
+                    <span class="error-msg" id="twoFactorContact-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Account Status (check all that apply)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="accountStatus" value="verified_badge">
+                            LinkedIn verification badge present (blue checkmark)
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="accountStatus" value="email_verified">
+                            Email address verified on LinkedIn
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="accountStatus" value="phone_verified">
+                            Phone number verified on LinkedIn
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="accountStatus" value="no_restrictions">
+                            No recent account restrictions or warnings
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="accountStatus" value="premium">
+                            LinkedIn Premium or Sales Navigator active
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Target Audience & Goals -->
+            <div class="form-step" id="step3">
+                <div class="step-header">
+                    <h2>Target Audience & Goals</h2>
+                    <p>Help us understand who you want to reach and what you want to achieve.</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Primary Goal <span class="required">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-card">
+                            <input type="radio" name="primaryGoal" value="grow_network" required>
+                            <div class="radio-card-content">
+                                <strong>Grow Network</strong>
+                                <p>Affinity 500+ Program - Focus on building connections first</p>
+                            </div>
+                        </label>
+                        <label class="radio-card">
+                            <input type="radio" name="primaryGoal" value="get_business">
+                            <div class="radio-card-content">
+                                <strong>Get New Business</strong>
+                                <p>Affinity 3000 Program - Focus on lead generation first</p>
+                            </div>
+                        </label>
+                    </div>
+                    <span class="error-msg" id="primaryGoal-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Target Audience Category <span class="required">*</span> (select all that apply)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="audienceCategory" value="general_broad" id="cat_general">
+                            General Broad Audience - Everyone / Maximum reach
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="audienceCategory" value="ethnic_community" id="cat_ethnic">
+                            Ethnic Community - Specific ethnic/cultural group
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="audienceCategory" value="religious_community" id="cat_religious">
+                            Religious Community - Faith-based targeting
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="audienceCategory" value="industry_specific" id="cat_industry">
+                            Industry-Specific - Target specific industries
+                        </label>
+                    </div>
+                    <span class="error-msg" id="audienceCategory-error"></span>
+                </div>
+
+                <!-- Conditional: Ethnic Community Details -->
+                <div class="conditional-section" id="ethnicDetails" style="display:none;">
+                    <h3>Ethnic Community Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ethnicCommunity">Specific Community</label>
+                            <input type="text" id="ethnicCommunity" name="ethnicCommunity" placeholder="e.g. Hispanic, South Asian, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="ethnicGeographic">Geographic Focus</label>
+                            <input type="text" id="ethnicGeographic" name="ethnicGeographic" placeholder="e.g. Southern California">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="languagePreferences">Language Preferences</label>
+                        <input type="text" id="languagePreferences" name="languagePreferences" placeholder="e.g. English, Spanish">
+                    </div>
+                </div>
+
+                <!-- Conditional: Religious Community Details -->
+                <div class="conditional-section" id="religiousDetails" style="display:none;">
+                    <h3>Religious Community Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="religiousAffiliation">Religious Affiliation</label>
+                            <input type="text" id="religiousAffiliation" name="religiousAffiliation" placeholder="e.g. Christian, Muslim, Jewish, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label for="communityOrgs">Community Organizations to Target</label>
+                            <input type="text" id="communityOrgs" name="communityOrgs" placeholder="e.g. Local churches, mosques, etc.">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conditional: Industry Details -->
+                <div class="conditional-section" id="industryDetails" style="display:none;">
+                    <h3>Industry-Specific Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="primaryIndustry">Primary Industry</label>
+                            <input type="text" id="primaryIndustry" name="primaryIndustry" placeholder="e.g. Real Estate, Healthcare">
+                        </div>
+                        <div class="form-group">
+                            <label for="secondaryIndustry">Secondary Industry</label>
+                            <input type="text" id="secondaryIndustry" name="secondaryIndustry" placeholder="e.g. Construction, Finance">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="industryKeywords">Industry-Specific Keywords</label>
+                        <input type="text" id="industryKeywords" name="industryKeywords" placeholder="Comma-separated keywords relevant to your target industry">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="nicheSpecialization">Your Niche / Specialization <span class="required">*</span></label>
+                    <input type="text" id="nicheSpecialization" name="nicheSpecialization" required placeholder="e.g. Commercial Auto Insurance, Workers Comp for Contractors">
+                    <span class="error-msg" id="nicheSpecialization-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetJobTitles">Target Job Titles <span class="required">*</span></label>
+                    <textarea id="targetJobTitles" name="targetJobTitles" required rows="4" placeholder="List 10-15 job titles you want to connect with, one per line. Example:&#10;Business Owner&#10;CEO&#10;CFO&#10;HR Director&#10;Operations Manager"></textarea>
+                    <small class="field-hint">List the job titles of people you want to connect with (10-15 recommended).</small>
+                    <span class="error-msg" id="targetJobTitles-error"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="geographicFocus">Geographic Focus <span class="required">*</span></label>
+                        <input type="text" id="geographicFocus" name="geographicFocus" required placeholder="e.g. Los Angeles, CA / Nationwide">
+                        <span class="error-msg" id="geographicFocus-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="companySizePreference">Target Company Size</label>
+                        <select id="companySizePreference" name="companySizePreference">
+                            <option value="">Any size</option>
+                            <option value="1_10">1-10 employees</option>
+                            <option value="11_50">11-50 employees</option>
+                            <option value="51_200">51-200 employees</option>
+                            <option value="201_500">201-500 employees</option>
+                            <option value="500_plus">500+ employees</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="seniorityLevel">Target Seniority Level</label>
+                    <div class="checkbox-group horizontal">
+                        <label class="checkbox-label"><input type="checkbox" name="seniorityLevel" value="entry"> Entry</label>
+                        <label class="checkbox-label"><input type="checkbox" name="seniorityLevel" value="mid"> Mid-Level</label>
+                        <label class="checkbox-label"><input type="checkbox" name="seniorityLevel" value="senior"> Senior</label>
+                        <label class="checkbox-label"><input type="checkbox" name="seniorityLevel" value="executive"> Executive</label>
+                        <label class="checkbox-label"><input type="checkbox" name="seniorityLevel" value="csuite"> C-Suite</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Profile Details -->
+            <div class="form-step" id="step4">
+                <div class="step-header">
+                    <h2>LinkedIn Profile Details</h2>
+                    <p>Tell us about your current LinkedIn profile so we can optimize it for maximum impact.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentHeadline">Current LinkedIn Headline</label>
+                    <input type="text" id="currentHeadline" name="currentHeadline" maxlength="220" placeholder="Copy your current LinkedIn headline here">
+                    <small class="field-hint">Max 220 characters. We'll help optimize this.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="currentAbout">Current About / Summary Section</label>
+                    <textarea id="currentAbout" name="currentAbout" rows="5" maxlength="2600" placeholder="Paste your current LinkedIn About section here (or leave blank if you don't have one)"></textarea>
+                    <small class="field-hint">Max 2,600 characters. We'll craft an optimized version for you.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="keyAccomplishments">Key Accomplishments & Expertise</label>
+                    <textarea id="keyAccomplishments" name="keyAccomplishments" rows="4" placeholder="List your key professional accomplishments, awards, specializations, or unique expertise that should be highlighted on your profile."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="valueProposition">Your Unique Value Proposition</label>
+                    <input type="text" id="valueProposition" name="valueProposition" placeholder="In one sentence, what makes you different from other insurance professionals?">
+                </div>
+
+                <div class="form-group">
+                    <label>Profile Photo & Banner</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="profileAssets" value="has_headshot">
+                            I have a professional headshot ready
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="profileAssets" value="has_banner">
+                            I have a professional background banner
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="profileAssets" value="needs_headshot">
+                            I need help getting a professional headshot
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="profileAssets" value="needs_banner">
+                            I need a background banner designed
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="recommendationCount">How many LinkedIn recommendations do you currently have?</label>
+                    <select id="recommendationCount" name="recommendationCount">
+                        <option value="0">None</option>
+                        <option value="1_2">1-2</option>
+                        <option value="3_5">3-5</option>
+                        <option value="6_10">6-10</option>
+                        <option value="10_plus">10+</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Licenses & Certifications (check all that apply)</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="licenses" value="property_casualty">
+                            Property & Casualty License
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="licenses" value="life_health">
+                            Life & Health License
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="licenses" value="surplus_lines">
+                            Surplus Lines License
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="licenses" value="other_license">
+                            Other (specify in notes below)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileNotes">Additional Notes about Your Profile</label>
+                    <textarea id="profileNotes" name="profileNotes" rows="3" placeholder="Anything else we should know about your profile or brand?"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 5: Campaign Preferences (LinkedIn Helper 2 only - no content posting) -->
+            <div class="form-step" id="step5">
+                <div class="step-header">
+                    <h2>Campaign Preferences</h2>
+                    <p>Help us configure your LinkedIn Helper 2 outreach campaign settings.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="weekendActivity">Weekend LinkedIn Activity</label>
+                    <select id="weekendActivity" name="weekendActivity">
+                        <option value="disabled">Disabled - Weekdays only</option>
+                        <option value="enabled">Enabled - Run campaigns 7 days a week</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="preferredWorkingHours">Preferred Campaign Hours</label>
+                    <select id="preferredWorkingHours" name="preferredWorkingHours">
+                        <option value="9am_5pm" selected>9 AM - 5 PM (Business hours)</option>
+                        <option value="8am_6pm">8 AM - 6 PM (Extended business)</option>
+                        <option value="7am_9pm">7 AM - 9 PM (Full day)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="defyMessagingApproval">Do you approve BBM Group referral messaging? <span class="required">*</span></label>
+                    <div class="info-box small">
+                        After building relationships with your connections (typically month 3+), we'll send soft introductions to insurance services on your behalf.
+                    </div>
+                    <select id="defyMessagingApproval" name="defyMessagingApproval" required>
+                        <option value="">Select...</option>
+                        <option value="yes">Yes - I approve BBM Group referral messaging</option>
+                        <option value="review_first">Yes, but I want to review each message first</option>
+                        <option value="no">No - I don't want referral messaging</option>
+                    </select>
+                    <span class="error-msg" id="defyMessagingApproval-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="campaignNotes">Additional Campaign Preferences or Notes</label>
+                    <textarea id="campaignNotes" name="campaignNotes" rows="3" placeholder="Any specific requests, topics to avoid, or preferences for your campaign?"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 6: Agreement & Sign-off -->
+            <div class="form-step" id="step6">
+                <div class="step-header">
+                    <h2>Agreement & Authorization</h2>
+                    <p>Please review and accept the following terms to complete your onboarding.</p>
+                </div>
+
+                <div class="agreement-box">
+                    <h3>Authorization Agreement</h3>
+                    <p>By completing this form, I confirm that:</p>
+                    <ul>
+                        <li>I authorize Black Belt Management Group (BBM Group) to access and manage my LinkedIn account as described in the Affinity Advantage Program.</li>
+                        <li>I understand that automated tools (LinkedIn Helper 2) will be used to send connection requests and messages on my behalf.</li>
+                        <li>I have provided accurate LinkedIn login credentials and will assist with two-factor authentication when needed.</li>
+                        <li>I understand the daily action limits and campaign parameters will be set based on my account classification to protect my account.</li>
+                        <li>I can request to pause or stop campaigns at any time by contacting my Project Manager.</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label agreement-check">
+                        <input type="checkbox" id="agreeTerms" name="agreeTerms" required>
+                        <span>I have read and agree to the above terms and authorize BBM Group to manage my LinkedIn account as described. <span class="required">*</span></span>
+                    </label>
+                    <span class="error-msg" id="agreeTerms-error"></span>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="signatureName">Digital Signature (Type Full Name) <span class="required">*</span></label>
+                        <input type="text" id="signatureName" name="signatureName" required placeholder="Type your full legal name" class="signature-input">
+                        <span class="error-msg" id="signatureName-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="signatureDate">Date <span class="required">*</span></label>
+                        <input type="date" id="signatureDate" name="signatureDate" required>
+                        <span class="error-msg" id="signatureDate-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" style="display:none;">Back</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Continue</button>
+                <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">Submit Onboarding Form</button>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage" style="display:none;">
+            <div class="success-icon">&#10003;</div>
+            <h2>Onboarding Form Submitted Successfully!</h2>
+            <p>Thank you for completing the BBM Group Affinity Advantage Program onboarding form.</p>
+            <p>Your assigned Project Manager will review your information and reach out within <strong>24 hours</strong>.</p>
+            <div class="next-steps">
+                <h3>What Happens Next:</h3>
+                <ol>
+                    <li>Your Project Manager will review your submission</li>
+                    <li>You'll receive a confirmation email with details</li>
+                    <li>We'll schedule a 60-90 minute onboarding call</li>
+                    <li>Your LinkedIn profile optimization begins</li>
+                    <li>Campaign launches within 2 weeks of onboarding</li>
+                </ol>
+            </div>
+            <div class="schedule-meeting" style="margin-top:24px; padding:24px; background:#f0fff4; border:1px solid #c6f6d5; border-radius:8px;">
+                <h3 style="color:#276749; margin-bottom:12px;">Schedule Your Onboarding Meeting</h3>
+                <p style="margin-bottom:16px; font-size:14px; color:#2d3748;">Click the button below to schedule your onboarding meeting with Ramy Sharaf.</p>
+                <a href="https://teams.microsoft.com/l/message/19:87d55d04-c486-4450-8eec-c81cb9e1396a_90f9b8a2-4166-4eb5-ad96-40d1944eaae2@unq.gbl.spaces/1772133509279?context=%7B%22contextType%22%3A%22chat%22%7D" target="_blank" class="btn btn-primary" style="display:inline-block; text-decoration:none; text-align:center; padding:14px 32px;">Schedule Meeting</a>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Black Belt Management Group - Affinity Advantage Program | Confidential</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
