@@ -400,8 +400,8 @@ function generateClientEmailHTML(data) {
             <ol>
                 <li><strong>Schedule Meeting:</strong> Use the button above to schedule your onboarding meeting.</li>
                 <li><strong>Onboarding Meeting (60-90 min):</strong> We'll review your LinkedIn profile, finalize your target audience, and optimize your profile.</li>
-                <li><strong>Week 1:</strong> Profile optimization and campaign setup.</li>
-                <li><strong>Week 2:</strong> Campaign launch! Your outreach automation goes live.</li>
+                <li><strong>Day 1-2:</strong> Profile optimization and campaign setup.</li>
+                <li><strong>Day 3:</strong> Campaign launch! Your outreach automation goes live.</li>
                 <li><strong>Month 3+:</strong> Referral introductions begin (with your approval).</li>
             </ol>
         </div>
